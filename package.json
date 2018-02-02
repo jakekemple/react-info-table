@@ -1,0 +1,37 @@
+{
+  "name": "react-info-table",
+  "version": "1.0.0",
+  "description": "ReactJS Exercise aimed to deliver a single page application for viewing a table of user information",
+  "main": "index.jsx",
+  "scripts": {
+    "start": "webpack-dev-server --port 3000 --history-api-fallback",
+    "watch": "webpack --watch",
+    "build": "webpack"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jakekemple/react-info-table.git"
+  },
+  "author": "Jake Kemple",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jakekemple/react-info-table/issues"
+  },
+  "homepage": "https://github.com/jakekemple/react-info-table#readme",
+  "dependencies": {
+    "history": "^4.7.2",
+    "react": "^16.2.0",
+    "react-dom": "^16.2.0",
+    "react-router-dom": "^4.2.2",
+    "react-scripts": "1.1.0"
+  },
+  "devDependencies": {
+    "babel-core": "^6.26.0",
+    "babel-loader": "^7.1.2",
+    "babel-preset-es2016": "^6.24.1",
+    "babel-preset-react": "^6.24.1",
+    "babel-preset-stage-0": "^6.24.1",
+    "webpack": "^2.7.0",
+    "webpack-dev-server": "^2.4.4"
+  }
+}
