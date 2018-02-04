@@ -1,3 +1,5 @@
+/* ---- GLOBAL STYLES ---- */
+
 html, body, div, span, applet, object, iframe,
 h1, h2, h3, h4, h5, h6, p, blockquote, pre,
 a, abbr, acronym, address, big, cite, code,
@@ -30,17 +32,17 @@ ul {
     height: 100%;
 }
 
-tr > th, tr > td {
-    padding-left: 1rem;
-    padding-right: 3rem;
-    height: 32px;
-}
+/* ---- GLOBAL STYLES END ---- */
+
+
+/* ---- NAVBAR STYLING ---- */
 
 #navbar {
     height: 50px;
     background: #282653;
     color: #95A2AA;
     font-size: .75rem;
+    width: 100%;
 }
 
 .nav-tabs {
@@ -59,8 +61,8 @@ tr > th, tr > td {
     font-weight: 400;
     color: #95A2AA;
     text-decoration: none;
-    padding-left: 1.5rem;
-    padding-right: 1.5rem;
+    padding-left: 1.25rem;
+    padding-right: 1.25rem;
     display: block;
 }
 
@@ -73,7 +75,41 @@ tr > th, tr > td {
     color: #ffffff !important;
 }
 
+/* ---- NAVBAR STYLING END ---- */
 
+
+/* ---- USER INFO TABLE ---- */
+
+#info-table {
+    table-layout: fixed;
+    margin: 0px auto;
+    border-collapse: collapse;
+    padding: 0px;
+    margin-top: 2em;
+    margin-bottom: 2em;
+    width: 90%;
+}
+
+#info-table td, #info-table th{
+    overflow: hidden;
+    text-overflow: ellipsis;
+    width:9%;
+    white-space: nowrap;
+    height: 32px;
+    text-align: left;
+}
+
+#info-table td:nth-child(4), #info-table th:nth-child(4) {
+    width: 21%;
+}
+
+#info-table td:last-child, #info-table th:last-child {
+    width: 12%;
+}
+
+#info-table td:first-child, #info-table th:first-child {
+    padding-left: 1%;
+}
 
 #info-table-caption {
     font-size: 1rem;
@@ -81,6 +117,14 @@ tr > th, tr > td {
     color: #7F56C5;
     text-align: left;
     padding-bottom: .5rem;
+}
+
+#items-per-page {
+    float:right;
+}
+
+#title-sort {
+    float:left;
 }
 
 #sort-type {
@@ -100,25 +144,18 @@ tr > th, tr > td {
     border-radius: 3px 3px 0 0;
 }
 
-.table-header > tr > th:first-child {
+.table-header th:first-child {
     border-radius: 3px 0px 0 0;
 }
 
-.table-header > tr > th:last-child {
+.table-header th:last-child {
     border-radius: 0px 3px 0 0;
 }
 
-.table-header > tr > th {
+.table-header th {
     font-size: .75rem;
     font-weight: 700;
     color: #373752;
-}
-
-#info-table {
-    table-layout: fixed;
-    margin: 0px auto;
-    border-collapse: collapse;
-    padding: 0px;
 }
 
 .table-row {
@@ -126,6 +163,9 @@ tr > th, tr > td {
     font-size: .75rem;
     font-weight: 400;
     color: #808285;
-    background:#F0F0F0;
 }
 
+.table-row:nth-child(even) {background: #F0F0F0}
+.table-row:nth-child(odd) {background: #F7F7F7}
+
+/* ---- USER INFO TABLE ---- */
