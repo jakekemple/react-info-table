@@ -168,4 +168,15 @@ ul {
 .table-row:nth-child(even) {background: #F0F0F0}
 .table-row:nth-child(odd) {background: #F7F7F7}
 
+.page-arrows {
+    padding-left: .15em;
+    padding-right: .25em;
+    font-size: 1.2rem !important;
+}
+
+#items-per-page-dropdown {
+    padding-left: .25em;
+    padding-right: .75em;
+}
+
 /* ---- USER INFO TABLE ---- */

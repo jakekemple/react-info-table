@@ -1,6 +1,98 @@
 import React from 'react';
 var faker = require('faker');
 
+class Pagination extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            itemsPerPage: 10,
+        }
+    }
+
+    render() {
+
+        return (
+            <div id="items-per-page">
+                <span>Items per page:</span>
+                <span id="items-per-page-dropdown">
+                    <select>
+                        <option defaultValue value="5">5</option>
+                        <option value="10">10</option>
+                        <option value="25">25</option>
+                        <option value="50">50</option>
+                        <option value="75">75</option>
+                        <option value="100">100</option>
+                    </select>
+                </span>
+                <span> 
+                    1-10 of 30 <i className="page-arrows fa fa-angle-left"></i><i className="page-arrows fa fa-angle-right"></i>
+                </span>
+            </div>
+        );
+    }
+
+}
+
+class ColumnSort extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            sortBy: 'First Name',
+            data: this.props.data,
+            selectedOption: 'First Name'
+        };
+        this.sortByProperty = this.sortByProperty.bind(this);
+        this.sortOptionsUpdate = this.sortOptionsUpdate.bind(this);
+        
+    }
+
+    sortByProperty(property, reverse) {
+        if (!property){ property = 'First Name';}
+        if (typeof reverse === 'undefined') {reverse = false;}
+
+        return function(a, b) {
+            if (!reverse) {
+                if (a[property] < b[property])
+                    return -1;
+                if (a[property] > b[property])
+                    return 1;
+                return 0;
+            }
+    
+            if (a[property] < b[property])
+                return 1;
+            if (a[property] > b[property])
+                return -1;
+            return 0;
+        }
+    }
+
+    sortOptionsUpdate(property, reverse){
+        this.setState({selectedOption: property});
+        this.sortByProperty(property, reverse);
+        this.props.callbackFromParent(this.state.data);
+    }
+
+        render() {
+            return (
+                <div id="title-sort"><span>List of Awesome </span><span> | </span>
+                    <span id="sort-type"> Sort by: </span>
+                    <select value={this.state.selectedOption} 
+                            onChange={(selectedOption) => {console.log(selectedOption.target.value);this.setState({ data: this.state.data.sort(this.sortOptionsUpdate(selectedOption.target.value))})}}>
+                        <option value="First Name">First Name</option>
+                        <option value="Last Name">Last Name</option>
+                        <option value="Country">Country</option>
+                        <option value="Address">Address</option>
+                        <option value="City">City</option>
+                        <option value="State">State</option>
+                        <option value="Zip">Zip</option>
+                        <option value="Phone">Phone</option>
+                    </select>
+                </div>
+            );
+        }
+}
+
 class TableRow extends React.Component {
     render() {
         return (
@@ -19,32 +111,23 @@ class TableRow extends React.Component {
 }
 
 class Table extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            data: this.props.data
+        };    
+    };
+
+    myCallback = (dataFromChild) => {
+        this.setState({ data: dataFromChild });
+    };
+
     render() {
         return (
             <table id="info-table" cellSpacing="0">
                 <caption id="info-table-caption">
-                    <div id="title-sort"><span>List of Awesome </span>
-                    <span> | </span><span id="sort-type"> Sort by: </span>
-                    <select>
-                        <option defaultValue>Choose here</option>
-                        <option value="1">First Name</option>
-                        <option value="2">Last Name</option>
-                        <option value="3">Country</option>
-                        <option value="4">City</option>
-                        <option value="5">State</option>
-                    </select>
-                    </div>
-                    <div id="items-per-page"><span>items per page </span>
-                    <span>
-                    <select>
-                        <option defaultValue>Choose here</option>
-                        <option value="1">One</option>
-                        <option value="2">Two</option>
-                        <option value="3">Three</option>
-                        <option value="4">Four</option>
-                        <option value="5">Five</option>
-                    </select>
-                    </span><span> 1-10 of 30 <i className="fa fa-angle-left"></i><i className="fa fa-angle-right"></i></span></div>
+                    <ColumnSort data={this.state.data} callbackFromParent={this.myCallback} />
+                    <Pagination data={this.state.data} />
                 </caption>
                 <thead className="table-header">
                     <tr>
@@ -59,13 +142,11 @@ class Table extends React.Component {
                     </tr>
                 </thead>
                 <tbody>
-                {
-                this.props.data.map(
-                    (row) => {
-                    return <TableRow key={row.id} row={row} />;
-                    }
-                    )
-                }
+                    {this.state.data.map(
+                        (row) => {
+                            return <TableRow key={row.id} row={row} />;
+                        }
+                    )}
                 </tbody>
             </table>
         );
@@ -73,8 +154,15 @@ class Table extends React.Component {
 }
 
 class InfoTable extends React.Component {
+
+    constructor(props) {
+        super(props);
+        this.state = {
+            userArray: [],
+        }
+    }
+
     render () {
-        let userArray = [];
         
         for(var i=0; i<100; i++) {
             var newUser = { 
@@ -88,12 +176,12 @@ class InfoTable extends React.Component {
                 zip : faker.address.zipCode(),
                 phone : faker.phone.phoneNumber()
             };
-            userArray.push(newUser);
+            this.state.userArray.push(newUser);
         }
 
         return (
             <div>
-                <Table data={userArray} />      
+                <Table data={this.state.userArray} />      
             </div>
         );
     }
