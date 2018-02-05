@@ -10,7 +10,6 @@ class Pagination extends React.Component {
     }
 
     render() {
-
         return (
             <div id="items-per-page">
                 <span>Items per page:</span>
@@ -30,67 +29,75 @@ class Pagination extends React.Component {
             </div>
         );
     }
-
 }
 
 class ColumnSort extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            sortBy: 'First Name',
-            data: this.props.data,
-            selectedOption: 'First Name'
+            sortBy: 'firstname',
+            tableData: this.props.tableData,
+            selectedOption: 'firstname'
         };
         this.sortByProperty = this.sortByProperty.bind(this);
         this.sortOptionsUpdate = this.sortOptionsUpdate.bind(this);
         
     }
 
-    sortByProperty(property, reverse) {
-        if (!property){ property = 'First Name';}
-        if (typeof reverse === 'undefined') {reverse = false;}
+    sortByProperty(property) {
+        let reverse = false;
+        if (!property | property === 'undefined'){ 
+            property = "firstname";
+        }
+        if (typeof reverse === 'undefined') {
+            reverse = false;
+        }
 
         return function(a, b) {
             if (!reverse) {
-                if (a[property] < b[property])
+                if (a[property] < b[property]){
                     return -1;
-                if (a[property] > b[property])
+                }
+                if (a[property] > b[property]){
                     return 1;
+                }
                 return 0;
             }
     
-            if (a[property] < b[property])
+            if (a[property] < b[property]){
                 return 1;
-            if (a[property] > b[property])
+            }
+            if (a[property] > b[property]){
                 return -1;
+            }
             return 0;
         }
     }
 
-    sortOptionsUpdate(property, reverse){
+    sortOptionsUpdate(property){
         this.setState({selectedOption: property});
-        this.sortByProperty(property, reverse);
-        this.props.callbackFromParent(this.state.data);
+        this.state.tableData.sort(this.sortByProperty(property));
+        this.props.callbackFromTable(this.state.tableData);
     }
 
-        render() {
-            return (
-                <div id="title-sort"><span>List of Awesome </span><span> | </span>
-                    <span id="sort-type"> Sort by: </span>
-                    <select value={this.state.selectedOption} 
-                            onChange={(selectedOption) => {console.log(selectedOption.target.value);this.setState({ data: this.state.data.sort(this.sortOptionsUpdate(selectedOption.target.value))})}}>
-                        <option value="First Name">First Name</option>
-                        <option value="Last Name">Last Name</option>
-                        <option value="Country">Country</option>
-                        <option value="Address">Address</option>
-                        <option value="City">City</option>
-                        <option value="State">State</option>
-                        <option value="Zip">Zip</option>
-                        <option value="Phone">Phone</option>
-                    </select>
-                </div>
-            );
-        }
+    render() {
+        return (
+            <div id="title-sort"><span>List of Awesome </span><span> | </span>
+                <span id="sort-type"> Sort by: </span>
+                <select value={this.state.selectedOption} 
+                        onChange={(event) => {this.sortOptionsUpdate(event.target.value)}}>
+                    <option value="firstname">First Name</option>
+                    <option value="lastname">Last Name</option>
+                    <option value="country">Country</option>
+                    <option value="address">Address</option>
+                    <option value="city">City</option>
+                    <option value="state">State</option>
+                    <option value="zip">Zip</option>
+                    <option value="phone">Phone</option>
+                </select>
+            </div>
+        );
+    }
 }
 
 class TableRow extends React.Component {
@@ -114,20 +121,20 @@ class Table extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            data: this.props.data
+            tableData: this.props.tableData
         };    
     };
 
-    myCallback = (dataFromChild) => {
-        this.setState({ data: dataFromChild });
+    columnSortCallback = (updatedTableData) => {
+        this.setState({ tableData: updatedTableData });
     };
 
     render() {
         return (
             <table id="info-table" cellSpacing="0">
                 <caption id="info-table-caption">
-                    <ColumnSort data={this.state.data} callbackFromParent={this.myCallback} />
-                    <Pagination data={this.state.data} />
+                    <ColumnSort tableData={this.state.tableData} callbackFromTable={this.columnSortCallback} />
+                    <Pagination tableData={this.state.tableData} />
                 </caption>
                 <thead className="table-header">
                     <tr>
@@ -142,7 +149,7 @@ class Table extends React.Component {
                     </tr>
                 </thead>
                 <tbody>
-                    {this.state.data.map(
+                    {this.state.tableData.map(
                         (row) => {
                             return <TableRow key={row.id} row={row} />;
                         }
@@ -163,25 +170,26 @@ class InfoTable extends React.Component {
     }
 
     render () {
-        
-        for(var i=0; i<100; i++) {
-            var newUser = { 
-                id: i,
-                firstname : faker.name.firstName(),
-                lastname : faker.name.lastName(),
-                country : faker.address.country(),
-                address : faker.address.streetName(),
-                city : faker.address.city(),
-                state : faker.address.state(),
-                zip : faker.address.zipCode(),
-                phone : faker.phone.phoneNumber()
-            };
-            this.state.userArray.push(newUser);
-        }
+        if (this.state.userArray[0] === undefined || this.state.userArray.length === 0) {
+            for(var i=0; i<100; i++) {
+                var newUser = { 
+                    id: i,
+                    firstname : faker.name.firstName(),
+                    lastname : faker.name.lastName(),
+                    country : faker.address.country(),
+                    address : faker.address.streetName(),
+                    city : faker.address.city(),
+                    state : faker.address.state(),
+                    zip : faker.address.zipCode(),
+                    phone : faker.phone.phoneNumber()
+                };
+                this.state.userArray.push(newUser);
+            }
+        }   
 
         return (
             <div>
-                <Table data={this.state.userArray} />      
+                <Table tableData={this.state.userArray} />      
             </div>
         );
     }
