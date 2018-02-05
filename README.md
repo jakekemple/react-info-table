@@ -1,2 +1,2 @@
 # react-info-table
-ReactJS Exercise aimed to deliver a single page application for viewing a table of user information
+A ReactJS exercise aimed to deliver a table of arbitrary user information in a UX-friendly single page application
