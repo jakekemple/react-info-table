@@ -7,7 +7,7 @@ import AwesomeComponent from './AwesomeComponent.jsx';
 class App extends React.Component {
     constructor(props) {
         super(props);
-        this.setActiveTab= this.setActiveTab.bind(this);
+        this.setActiveTab = this.setActiveTab.bind(this);
     }
 
     setActiveTab(tab) {

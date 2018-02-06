@@ -5,7 +5,41 @@ class Pagination extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            itemsPerPage: 10,
+            itemsPerPage: 5,
+            pageIncrementer: 0,
+            tableData: this.props.tableData,
+            firstdisplayedRow: 0, //itemsPerPage unless itemsPerPage is 5
+            lastdisplayedRow: 5, //pageIncrementer + itemsPerPage
+        }
+        this.originalTableData = this.props.tableData;
+        this.previousResults = this.previousResults.bind(this);
+        this.nextResults = this.nextResults.bind(this);
+    }
+
+    updateItemsPerPage(selectedItemsPerPage) {
+        this.setState({itemsPerPage: selectedItemsPerPage});   
+        this.state.tableData = this.originalTableData.slice(0, selectedItemsPerPage);
+        this.setState({firstdisplayedRow: 0});
+        this.setState({lastdisplayedRow: selectedItemsPerPage});
+        this.setState({tableData: this.originalTableData.slice(0, selectedItemsPerPage)})
+        this.props.callbackFromTable(this.state.tableData);
+    }
+
+    previousResults() {
+        if(this.state.firstdisplayedRow != 0) {
+            this.state.firstdisplayedRow = this.state.firstdisplayedRow - this.state.itemsPerPage;
+            this.state.lastdisplayedRow = this.state.lastdisplayedRow - this.state.itemsPerPage;
+            this.state.tableData = this.originalTableData.slice(this.state.firstdisplayedRow, this.state.lastdisplayedRow);
+            this.props.callbackFromTable(this.state.tableData);
+        }
+    }
+
+    nextResults(selectedItemsPerPage) {
+        if(this.state.lastdisplayedRow < this.originalTableData.length) {
+            this.state.firstdisplayedRow = this.state.firstdisplayedRow + this.state.itemsPerPage;
+            this.state.lastdisplayedRow = this.state.lastdisplayedRow + this.state.itemsPerPage;
+            this.state.tableData = this.originalTableData.slice(this.state.firstdisplayedRow, this.state.lastdisplayedRow);
+            this.props.callbackFromTable(this.state.tableData);
         }
     }
 
@@ -14,8 +48,9 @@ class Pagination extends React.Component {
             <div id="items-per-page">
                 <span>Items per page:</span>
                 <span id="items-per-page-dropdown">
-                    <select>
-                        <option defaultValue value="5">5</option>
+                    <select value={this.state.itemsPerPage} 
+                            onChange={(event) => {this.updateItemsPerPage(parseInt(event.target.value))}}>
+                        <option value="5">5</option>
                         <option value="10">10</option>
                         <option value="25">25</option>
                         <option value="50">50</option>
@@ -24,7 +59,7 @@ class Pagination extends React.Component {
                     </select>
                 </span>
                 <span> 
-                    1-10 of 30 <i className="page-arrows fa fa-angle-left"></i><i className="page-arrows fa fa-angle-right"></i>
+                    1-10 of 30 <i onClick={() => {this.previousResults(this.state.itemsPerPage)}} className="page-arrows fa fa-angle-left"></i><i onClick={() => {this.nextResults(this.state.itemsPerPage)}} className="page-arrows fa fa-angle-right"></i>
                 </span>
             </div>
         );
@@ -35,7 +70,6 @@ class ColumnSort extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            sortBy: 'firstname',
             tableData: this.props.tableData,
             selectedOption: 'firstname'
         };
@@ -129,12 +163,21 @@ class Table extends React.Component {
         this.setState({ tableData: updatedTableData });
     };
 
+    paginationCallback = (updatedTableData) => {
+        this.setState({ tableData: updatedTableData });
+    };
+
+    componentDidMount() {
+        this.columnSort.sortOptionsUpdate();
+        this.pagination.updateItemsPerPage(5);
+    }
+
     render() {
         return (
             <table id="info-table" cellSpacing="0">
                 <caption id="info-table-caption">
-                    <ColumnSort tableData={this.state.tableData} callbackFromTable={this.columnSortCallback} />
-                    <Pagination tableData={this.state.tableData} />
+                    <ColumnSort ref={(cd) => this.columnSort = cd} tableData={this.state.tableData} callbackFromTable={this.columnSortCallback} />
+                    <Pagination ref={(cd) => this.pagination = cd} tableData={this.state.tableData} callbackFromTable={this.paginationCallback} />
                 </caption>
                 <thead className="table-header">
                     <tr>
@@ -170,6 +213,7 @@ class InfoTable extends React.Component {
     }
 
     render () {
+
         if (this.state.userArray[0] === undefined || this.state.userArray.length === 0) {
             for(var i=0; i<100; i++) {
                 var newUser = { 
