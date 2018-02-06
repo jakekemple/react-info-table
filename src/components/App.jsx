@@ -2,7 +2,7 @@ import React from 'react';
 import { BrowserRouter, Route, Link, Switch } from 'react-router-dom';
 
 import InfoTable from './InfoTable.jsx';
-import AwesomeComponent from './AwesomeComponent.jsx';
+import LandingComponent from './LandingComponent.jsx';
 
 class App extends React.Component {
     constructor(props) {
@@ -25,14 +25,14 @@ class App extends React.Component {
                 <BrowserRouter>
                     <div>
                     <ul>
-                        <li className="nav-tabs"><Link to="/" id="info-table-tab" onClick={((e) => this.setActiveTab(e))}>Info Table</Link></li>
-                        <li className="nav-tabs"><Link to="/Awesome" id="second-tab" onClick={((e) => this.setActiveTab(e))}>Test Link</Link></li>
+                        <li className="nav-tabs"><Link to="/" id="second-tab" onClick={((e) => this.setActiveTab(e))}>Home</Link></li>
+                        <li className="nav-tabs"><Link to="/InfoTable" id="info-table-tab" onClick={((e) => this.setActiveTab(e))}>Info Table</Link></li>
                         <li className="nav-tabs"><Link to="#" id="third-tab" onClick={((e) => this.setActiveTab(e))}>Dead Link</Link></li>
                     </ul>
             
                     <Switch>
-                        <Route exact path="/" component={InfoTable} />
-                        <Route exact path="/Awesome" component={AwesomeComponent} />
+                        <Route exact path="/InfoTable" component={InfoTable} />
+                        <Route exact path="/" component={LandingComponent} />
                     </Switch>
                     </div>
                 </BrowserRouter>

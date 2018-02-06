@@ -1,7 +1,7 @@
 /* ---- GLOBAL STYLES ---- */
 
-html, body, div, span, applet, object, iframe,
-h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+html, body, span, applet, object, iframe,
+h2, h3, h4, h5, h6, blockquote, pre,
 a, abbr, acronym, address, big, cite, code,
 del, dfn, em, img, ins, kbd, q, s, samp,
 small, strike, strong, sub, sup, tt, var,
@@ -33,6 +33,35 @@ ul {
 }
 
 /* ---- GLOBAL STYLES END ---- */
+
+
+/* ---- LANDING PAGE ---- */
+
+#landing-container {
+    display: table;
+    margin: auto;
+    margin-top: 2.5rem;
+    line-height: 2.5rem;
+}
+
+#project-title {
+    margin:0;
+    color: #282653;
+    font-size: 2.25rem;
+    
+}
+
+#project-subtitle {
+    color: #282653;
+    font-size: 1.5rem;
+}
+
+#repo-link {
+    color: #282653;
+    font-size: 1.25rem;
+}
+
+/* ---- LANDING PAGE END ---- */
 
 
 /* ---- NAVBAR STYLING ---- */
@@ -99,6 +128,10 @@ ul {
     text-align: left;
 }
 
+#info-table th {
+    cursor: pointer;
+}
+
 #info-table td:nth-child(4), #info-table th:nth-child(4) {
     width: 21%;
 }
@@ -119,6 +152,12 @@ ul {
     padding-bottom: .5rem;
 }
 
+#separation-pipe {
+    font-size: 1rem; 
+    font-weight: 300; 
+    color: #BCBEC0;
+}
+
 #items-per-page {
     float:right;
 }
@@ -130,6 +169,7 @@ ul {
 #sort-type {
     color: #7F56C5;
     font-weight: 400;
+    font-size: .75rem;
 }
 
 #sort-items {
@@ -172,11 +212,18 @@ ul {
     padding-left: .15em;
     padding-right: .25em;
     font-size: 1.2rem !important;
+    color: #1DAFE9;
 }
 
 #items-per-page-dropdown {
     padding-left: .25em;
     padding-right: .75em;
+}
+
+@media only screen and (max-width: 694px) {
+    #items-per-page {
+        float:left;
+    }
 }
 
 /* ---- USER INFO TABLE ---- */
